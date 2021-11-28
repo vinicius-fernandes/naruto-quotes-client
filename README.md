@@ -1,5 +1,7 @@
-# Naruto Quotes Client
-Naruto quotes generator client for DIO lesson.
+# Random quotes
+Random quotes generator using react for DIO lesson.
+
+Using: React hooks , Styled Components and quotable.io API.
 
 ![screenshot](screenshot.png?raw=true "screenshot")
 

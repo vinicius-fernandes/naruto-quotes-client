@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { App } from './App';
 
-const response = { speaker: 'test speaker', quote: 'test quote' };
+const response = { content: 'testing' ,author:'testing'};
 
 const server = setupServer(
   rest.get(process.env.REACT_APP_API, (req, res, ctx) => {
@@ -14,43 +14,34 @@ const server = setupServer(
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
-
-test('renders a button and naruto image', () => {
-  render(<App />);
-
+test('renders the app,with a button and a quote',()=>{
+  render(<App/>);
   const buttonEl = screen.getByRole('button');
   const imageEl = screen.getByRole('img');
+  const textEl = screen.getByText(/Loading quote/);
 
   expect(buttonEl).toBeInTheDocument();
   expect(imageEl).toBeInTheDocument();
+  expect(textEl).toBeInTheDocument();
+
 });
 
-test('calls api on startup and renders it response', async () => {
-  render(<App />);
 
-  const quoteEl = await screen.findByText(/test quote/i);
+test('calls api on button click and update its text', async ()=>{
+render(<App/>);
 
-  expect(quoteEl).toBeInTheDocument();
-});
+const buttonEl = screen.getByRole('button');
+fireEvent.click(buttonEl);
 
-test('calls api on button click and update its text', async () => {
-  const customResponse = {
-    speaker: 'custom test speaker',
-    quote: 'teste quote'
-  };
+const quoteEl = await screen.findByText(response.content);
+expect(quoteEl).toBeInTheDocument();
+})
 
-  render(<App />);
 
-  server.use(
-    rest.get(process.env.REACT_APP_API, (req, res, ctx) => {
-      return res(ctx.json(customResponse));
-    })
-  );
 
-  const buttonEl = screen.getByRole('button');
+test('class api on startup and redns it response',async ()=>{
+render(<App/>);
+const quoteEl = await screen.findByText(response.content);
+expect(quoteEl).toBeInTheDocument();
 
-  fireEvent.click(buttonEl);
-  const quoteEl = await screen.findByText(/custom test speaker/i);
-
-  expect(quoteEl).toBeInTheDocument();
-});
+})
