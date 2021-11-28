@@ -3,6 +3,7 @@ Random quotes generator using react for DIO lesson.
 
 Using: React hooks , Styled Components and quotable.io API.
 
+Based on DIO class.
 ![screenshot](screenshot.png?raw=true "screenshot")
 
 # Install
